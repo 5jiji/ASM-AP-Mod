@@ -1,0 +1,83 @@
+[manifest]
+version = "1.0.0"
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "main.lua"
+pattern = "function setup()"
+position = "after"
+payload = "require(\"ap.main\")"
+match_indent = true
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "main.lua"
+name = "ap.main"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "utils.lua"
+name = "ap.utils"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "debug.lua"
+name = "ap.debug"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "connection_screen.lua"
+name = "ap.connection_screen"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "ap_connect.lua"
+name = "ap.ap_connect"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "menu_setup.lua"
+name = "ap.menu_setup"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "textsys.lua"
+name = "ap.textsys"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "cmd_args.lua"
+name = "ap.cmd_args"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "handle_save.lua"
+name = "ap.handle_save"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "loading_screen.lua"
+name = "ap.loading_screen"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "trap/main.lua"
+name = "ap.trap.main"
+
+[[patches]]
+[patches.module]
+before = "main.lua"
+source = "trap/undo.lua"
+name = "ap.trap.undo"
