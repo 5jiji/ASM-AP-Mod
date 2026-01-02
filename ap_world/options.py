@@ -70,12 +70,12 @@ class ASMOptions(PerGameCommonOptions):
     finished_modes: FinishedModes
     win_10: Win10
     win_5: Win5
-    death_link: DeathLink
+    # death_link: DeathLink
 
 option_groups = [
     OptionGroup(
         "Gameplay Options",
-        [UnlockedModes, TrapChance, FinishedModes, Win10, Win5, DeathLink],
+        [UnlockedModes, TrapChance, FinishedModes, Win10, Win5],
     ),
 ]
 
@@ -86,7 +86,6 @@ option_presets = {
         "finished_modes": 10,
         "win_10": False,
         "win_5": False,
-        "death_link": False,
     },
     "I hate u": {
         "unlocked_modes": 0,
@@ -94,6 +93,5 @@ option_presets = {
         "finished_modes": 30,
         "win_10": True,
         "win_5": True,
-        "death_link": True,
     }
 }

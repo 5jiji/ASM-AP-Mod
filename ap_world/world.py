@@ -8,7 +8,7 @@ from . import options as apquest_options
 
 class ASMWorld(World):
     """
-    TODO
+    A Solitaire Mystery is a game which contains 30 different solitaire modes
     """
 
     game = "A Solitaire Mystery"
