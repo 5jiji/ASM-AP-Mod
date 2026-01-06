@@ -126,19 +126,17 @@ AP = {
     ["river-win_10"] = 119,
     ["river-streak_2"] = 120,
   },
+  id_to_loc = nil,
   ---@type integer[]
   _loc_to_check = {},
   ---@type fun(str: string): status:boolean
   check = function(str)
-    if not AP.loc_to_id[str] then return false end
+    if not AP.loc_to_id[str] then print("no '" .. str .. "' in loc to id") return false end
      
     table.insert(AP._loc_to_check, AP.loc_to_id[str])
     return true
   end,
   trap = {},
-  ["hi"] = {
-    ["boo"] = "hi"
-  }
 }
 
 --Screens
@@ -181,3 +179,16 @@ end
 achievement = function() print("No achievement when archipelago-ed :)") end
 
 AP.connect(assert_cmd_arg("ap_server"), assert_cmd_arg("ap_slot"), get_cmd_arg("ap_password") or "")
+
+---@return table
+function AP.get_id_to_loc()
+  if AP.id_to_loc ~= nil then return AP.id_to_loc end
+
+  local tbl = {}
+  for k,v in pairs(AP.loc_to_id) do
+    tbl[v] = k
+  end
+
+  AP.id_to_loc = tbl
+  return tbl
+end

@@ -4,7 +4,7 @@ from typing import Any
 from worlds.AutoWorld import World
 
 from . import items, locations, regions, rules, web_world
-from . import options as apquest_options
+from . import options as asm_options
 
 class ASMWorld(World):
     """
@@ -15,9 +15,9 @@ class ASMWorld(World):
 
     web = web_world.ASMWebWorld()
 
-    options_dataclass = apquest_options.ASMOptions
+    options_dataclass = asm_options.ASMOptions
     
-    options: apquest_options.ASMOptions
+    options: asm_options.ASMOptions
 
     location_name_to_id = locations.LOCATION_NAME_TO_ID
     item_name_to_id = items.ITEM_NAME_TO_ID
@@ -42,5 +42,5 @@ class ASMWorld(World):
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         return self.options.as_dict(
-            "finished_modes", "win_5", "win_10", "death_link"
+            "finished_modes", "win_5", "win_10"
         )

@@ -1,8 +1,10 @@
 menulist["ap_loading"] = {
   enter = function()
     menulist["main"].enter()
-    audiosys.addevent("music_mystery", "changetrack")
     
+    AUDIOEVENTS = {}
+    AUDIO["music_theme"].object:stop()
+
     DEBUG.remove_all_units("icon")
 
     for _,b in ipairs(BUTTONS) do
@@ -16,5 +18,16 @@ menulist["ap_loading"] = {
 
   leave = function()
     DEBUG.remove_all()
-  end
+  end,
+
+  button_setup = function(button, mousebutton, key)
+    if mousebutton ~= 1 then return end
+
+    menusys.sub("setup")
+		audiosys.play("beep2")
+  end,
+
+  button_close = function(...)
+    menulist["main"].button_close(...)
+  end,
 }

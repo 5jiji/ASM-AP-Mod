@@ -2,8 +2,6 @@ AP.screen = true
 
 menulist["ap_connection"] = {
   enter = function()
-    audiosys.addevent("music_mystery", "changetrack")
-    
     if #MENU == 1 then
       menulist["main"].enter()
     end
@@ -46,7 +44,6 @@ menulist["ap_connection"] = {
     textsys.write("password", x_text, 0.75 * screenh + 43, nil, {font = "header", gap = 5})
   end,
 
-  
   update = function()
     for i,unit in pairs(unitsys.findall("input")) do
       if not unit.dbg then
@@ -56,7 +53,6 @@ menulist["ap_connection"] = {
     end
   end,
   
-
   leave = function()
     unitsys.remove_byclass("thumbnail", "thumb");
   end,

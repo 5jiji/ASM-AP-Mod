@@ -38,8 +38,7 @@ ITEM_NAME_TO_ID = {
     "quant": 28,
     "key": 29,
     "river": 30,
-    "nothing": 31,
-    "no undo": 32,
+    "no undo": 31,
 }
 
 NORMAL_ITEMS = [
@@ -77,7 +76,6 @@ DEFAULT_ITEM_CLASSIFICATIONS = {
     "quant": ItemClassification.progression,
     "key": ItemClassification.progression,
     "river": ItemClassification.progression,
-    "nothing": ItemClassification.filler,
     "no undo": ItemClassification.trap,
 }
 
@@ -87,9 +85,11 @@ class ASMItem(Item):
 def get_random_filler_item_name(world: ASMWorld) -> str:
     if world.random.randint(0, 99) < world.options.trap_chance:
         return "no undo"
-    return "nothing"
+    return "Nothing"
 
 def create_item_with_correct_classification(world: ASMWorld, name: str) -> ASMItem:
+    if name == "Nothing":
+        return ASMItem(name, ItemClassification.filler, -1, world.player)
     classification = DEFAULT_ITEM_CLASSIFICATIONS[name]
     return ASMItem(name, classification, ITEM_NAME_TO_ID[name], world.player)
 

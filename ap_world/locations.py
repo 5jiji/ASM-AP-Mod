@@ -160,9 +160,9 @@ def create_events(world: ASMWorld) -> None:
 
     locations = get_final_mode_locations(world)
 
-    menu.add_event(f"Finish {world.options.finished_modes.value} modes", "Victory", lambda state, locations=locations: win_rule(state, world, locations))
+    menu.add_event(f"Finish {world.options.finished_modes.value} modes", "Victory", lambda state, locations=locations: victory_rule(state, world, locations))
 
-def win_rule(state: CollectionState, world: ASMWorld, locations: List[str]) -> bool:
+def victory_rule(state: CollectionState, world: ASMWorld, locations: List[str]) -> bool:
     count = 0
     for location in locations:
         if state.can_reach_location(location, world.player):

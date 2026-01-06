@@ -13,7 +13,6 @@ end)
 append("menulist[\"main\"].enter", function()
   if #UNLOCKED_SCRIPT == 1 then
     local unit = unitsys.find("icon")
-    --unit.x = 42
     unit.xp = -40
   end
 
@@ -21,6 +20,13 @@ append("menulist[\"main\"].enter", function()
     print(#UNLOCKED_SCRIPT)
     textsys.write("No modes unlocked :(", screenw / 2 - 35, screenh * 0.75, {font = "header", gap = 5})
   end
+
+  if AP.goal then
+    audiosys.addevent("music_mystery", "changetrack")
+  elseif not AP.goal and alternatemusic ~= 0 then
+    audiosys.addevent("music_theme", "changetrack")
+  end
+
 end)
 
 local enabledPosition = true

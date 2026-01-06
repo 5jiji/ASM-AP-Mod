@@ -4,6 +4,10 @@ function dbg(tbl, depth)
   print(deep_print(tbl, depth))
 end
 
+local TYPE = {
+
+}
+
 ---Output a table as a string
 ---@param tbl table
 ---@param depth number?
@@ -21,8 +25,10 @@ function deep_print(tbl, depth)
 
     if type(v) == "table" then
       str = str .. string.gsub(deep_print(v, depth), "\n", "\n  ")
-    else
+    elseif type(v) == "string" then
       str = str .. "\"" .. tostring(v) .. "\""
+    else
+      str = str .. tostring(v)
     end
   end
 
@@ -58,5 +64,10 @@ DEBUG = {
     end
 
     return new_tbl
+  end,
+
+  get_from_file = function(group, item)
+    local file = filesys.ini.open("save.txt")
+    return file:read(group, item)
   end
 }

@@ -1,7 +1,9 @@
 function AP.store_save()
-  print("AP: STORE SAVE")
-  
   if AP.save == nil then return end
+
+  AP._client:Set("ASM-save-" .. AP._client:get_player_number(), {}, false, {
+    {operation = "replace", value = AP.save}
+  })
 end
 
 local file_fun = {
@@ -11,14 +13,8 @@ local file_fun = {
 
   ---@param group string
   ---@param item string
-  ---@return any
+  ---@return string
   read = function(self,group,item)
-    print("read: ")
-    print("- group: " .. tostring(group))
-    print("- item: " .. tostring(item))
-
-    if not AP.save then return end
-
     if AP.save[group] == nil then AP.save[group] = {} end
 
     return AP.save[group][item]
@@ -33,23 +29,28 @@ local file_fun = {
 
   ---@param group string
   ---@param item string
-  ---@return boolean
+  ---@return boolean?
   readbool = function(self,group,item)
     return self:readnum(group, item) == 1
   end,
 
   ---@param group string
   ---@param item string
-  ---@param val any
+  ---@param val string
   write = function(self,group,item,val)
-    print("write")
-    print("- group: " .. tostring(group))
-    print("- item: " .. tostring(item))
-    print("- val: " .. tostring(val))
-
     if AP.save[group] == nil then AP.save[group] = {} end
 
     AP.save[group][item] = val
+
+    if group == "wins" then
+      if val == "1" then AP.check(item .. "-win_1") end
+      if val == "5" then AP.check(item .. "-win_5") end
+      if val == "10" then AP.check(item .. "-win_10") end
+    end
+
+    if group == "mstreak" then
+      if val == "2" then AP.check(item .. "-streak_2") end
+    end
   end,
 
   ---@param group string
