@@ -30,7 +30,7 @@ end
 ---@param fun fun(...: any): continue: boolean?, ...: any? The function to append
 function prepend(replace, fun)
   local c, err = loadstring("return " .. replace)
-  if c == nil then error(err) end
+  if c == nil then print("Prepend failed: " .. err) end
 
   loadstring([[return function (fun)
     local old_fun = ]] .. replace .. [[

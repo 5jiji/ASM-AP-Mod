@@ -4,10 +4,6 @@ function dbg(tbl, depth)
   print(deep_print(tbl, depth))
 end
 
-local TYPE = {
-
-}
-
 ---Output a table as a string
 ---@param tbl table
 ---@param depth number?
@@ -39,18 +35,6 @@ function deep_print(tbl, depth)
 end
 
 DEBUG = {
-  remove_all_units = function(class, name)
-    for _,e in ipairs(unitsys.findall(class, name)) do
-      unitsys.remove(e.id)
-    end
-  end,
-
-  remove_all = function()
-    DEBUG.remove_all_units()
-    textsys.erase()
-    menusys.button.erase()
-  end,
-
   refresh = function()
     DEBUG.remove_all()
     menusys.refresh()
@@ -71,3 +55,11 @@ DEBUG = {
     return file:read(group, item)
   end
 }
+
+if not love.filesystem.isFused() then
+  append("love.keypressed", function(_, key)
+    if key == "rctrl" then
+      debug.debug()
+    end
+  end)
+end

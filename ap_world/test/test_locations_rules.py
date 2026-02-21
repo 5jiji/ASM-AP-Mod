@@ -16,7 +16,12 @@ class TestRules(ASMTestBase):
                 loc_prefix = region.name
 
                 self.assertAccessDependency(
-                    [loc_prefix + "-win_1", loc_prefix + "-win_5", loc_prefix + "-win_10", loc_prefix + "-streak_2"],
+                    [
+                        loc_prefix + " - Win 1",
+                        loc_prefix + " - Win 5",
+                        loc_prefix + " - Win 10",
+                        loc_prefix + " - Streak 2"
+                    ],
                     [[item]],
                     only_check_listed=True
                 )

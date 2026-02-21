@@ -12,12 +12,12 @@ append("love.update", function()
     AP._client:LocationChecks(AP._loc_to_check)
 
     local file = filesys.ini.open("save.txt")
-    local pattern = AP.options.win10 and AP.options.win5 and "win_10" or not AP.options.win10 and AP.options.win5 and "win_5" or "win_1"
+    local pattern = AP.options.win10 and AP.options.win5 and "Win 10" or not AP.options.win10 and AP.options.win5 and "Win 5" or "Win 1"
 
     local id_to_loc = AP.get_id_to_loc()
     local finished_count = file:readnum("ap", "finished_count") or 0
     for _,id in ipairs(AP._loc_to_check) do
-      if string.find(id_to_loc[id], "-" .. pattern) ~= nil then
+      if string.find(id_to_loc[id], " - " .. pattern) ~= nil then
         finished_count = finished_count+1
       end
     end
@@ -34,16 +34,21 @@ append("love.update", function()
 end)
 
 append("love.quit", function()
-  AP._client:reset()
-  AP._client = nil
+  if AP._client then
+    AP._client:reset()
+    AP._client = nil
+  end
 end)
 
 function AP.connect(server, slot, password)
   local reconnect = 5
   AP._client = create_apclient("", game_name, server)
 
+  print("AP client created!")
+
   AP._client:set_socket_connected_handler(function ()
     AP.connected = true
+    reconnect = 6
   end)
   
   AP._client:set_socket_error_handler(function (msg)
@@ -51,17 +56,21 @@ function AP.connect(server, slot, password)
     if msg == "Connection refused" then
       reconnect = reconnect-1
       if reconnect <= 0 then
-        error("Failed to connect to server: Is the server address and port valid?\n")
+        AP._client = nil
+        AP.reason = "Retry count exceded: Is server online?"
+        AP.failed = true
       end
     end
+    AP.connected = false
   end)
   
   AP._client:set_socket_disconnected_handler(function ()
     AP.connected = false
+    reconnect=reconnect-1
   end)
   
   AP._client:set_room_info_handler(function()
-    AP._client:ConnectSlot(slot, password, 7, {"Lua-APClientPP", "NoText"}, version)
+    AP._client:ConnectSlot(slot, password or "", 7, {"Lua-APClientPP", "NoText"}, version)
   end)
   
   AP._client:set_slot_connected_handler(function (slot_data)
@@ -100,14 +109,18 @@ function AP.connect(server, slot, password)
 
   AP._client:set_slot_refused_handler(function(reason)
     if reason[1] == "IncompatibleVersion" then
-      error("Connecting to AP slot refused: To play this slot, update the mod on this computer.\n")
+      AP.reason = "Connecting to AP slot refused: To play this slot, update the mod on this computer."
     elseif reason[1] == "InvalidSlot" then
-      error("Connecting to AP slot refused: Unknown Slot Name\n")
+      AP.reason = "Connecting to AP slot refused: Unknown Slot Name"
     elseif reason[1] == "InvalidPassword" then
-      error("Connecting to AP slot refused: Invalid Slot Password\n")
+      AP.reason = "Connecting to AP slot refused: Invalid Slot Password"
     else
-      error("Connecting to AP slot refused: Check slot name and/or password\n\nMore details: " .. table.concat(reason) .. "\n")
+      AP.reason = "Connecting to AP slot refused: Check slot name and/or password\nMore details in console."
+      dbg(reason)
     end
+
+    AP._client = nil;
+    AP.failed = true
   end)
 
   AP._client:set_retrieved_handler(function(data, keys, command)
@@ -122,9 +135,8 @@ function AP.connect(server, slot, password)
 
   AP._client:set_data_package_changed_handler(function (dp)
     if not AP._client:is_data_package_valid() then return end
+    print("DATA PACKAGE: ")
     dbg(dp)
-
-
   end)
-
+  
 end

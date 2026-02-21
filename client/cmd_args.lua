@@ -9,12 +9,3 @@ function get_cmd_arg(key)
   local env = os.getenv(string.upper(key))
   return env
 end
-
----@param key string
----@return string
-function assert_cmd_arg(key)
-  local value = get_cmd_arg(key)
-  if value == nil then error("Missing cmd arg: '" .. key .. "' or environment '" .. string.upper(key) .. "'") end
-
-  return value
-end

@@ -42,14 +42,17 @@ local file_fun = {
 
     AP.save[group][item] = val
 
+    if subgames[item] == nil or subgames[item].title == nil then return end
+    local title = subgames[item].title
+
     if group == "wins" then
-      if val == "1" then AP.check(item .. "-win_1") end
-      if val == "5" then AP.check(item .. "-win_5") end
-      if val == "10" then AP.check(item .. "-win_10") end
+      if val == "1" then AP.check(title .. " - Win 1") end  
+      if val == "5" then AP.check(title .. " - Win 5") end
+      if val == "10" then AP.check(title .. " - Win 10") end
     end
 
     if group == "mstreak" then
-      if val == "2" then AP.check(item .. "-streak_2") end
+      if val == "2" then AP.check(title .. " - Streak 2") end
     end
   end,
 
